@@ -1,8 +1,25 @@
-from django.shortcuts import render
+from django.core import exceptions
+from django.shortcuts import render, redirect
+
+from e_prep.web.forns import ProfileCreateForm
+from e_prep.web.models import Profile, Album
+
+
+def get_profile():
+    try:
+        return Profile.objects.get()
+    except Profile.DoesNotExist as ex:
+        return None
 
 
 def index(request):
-    return render(request, 'core/home-with-profile.html')
+    profile = get_profile()
+    if profile is None:
+        return redirect('add profile')
+    context = {
+        'albums': Album.objects.all(),
+    }
+    return render(request, 'core/home-with-profile.html', context)
 
 
 def add_album(request):
@@ -19,6 +36,23 @@ def edit_album(request, pk):
 
 def delete_album(request, pk):
     return render(request, 'albums/delete-album.html')
+
+
+def add_profile(request):
+    if get_profile() is not None:
+        return redirect('index')
+
+    if request.method == 'GET':
+        form = ProfileCreateForm()
+    else:
+        form = ProfileCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    context = {
+        'form': form,
+    }
+    return render(request, 'core/home-no-profile.html', context)
 
 
 def details_profile(request):

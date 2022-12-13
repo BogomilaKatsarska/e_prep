@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from e_prep.web.views import index, delete_album, delete_profile, add_album, edit_album, details_profile, details_album
+from e_prep.web.views import index, delete_album, delete_profile, add_album, edit_album, details_profile, details_album, add_profile
 
 
 urlpatterns = (
@@ -12,7 +12,8 @@ urlpatterns = (
         path('delete/<int:pk>/', delete_album, name='delete album'),
     ])),
     path('profile/', include([
-        path('details/', delete_profile, name='details album'),
-        path('delete/', details_profile, name='delete album'),
+        path('add/', add_profile, name='add profile'),
+        path('details/', delete_profile, name='details profile'),
+        path('delete/', details_profile, name='delete profile'),
     ])),
 )

@@ -3,10 +3,7 @@
 
 <!-- Catalog with Albums-->
 <section id="catalogPage">
-
-    <!--  If No albums in catalog -->
-    <p>No Albums in Catalog!</p>
-
+    {% if albums %}
     <!-- If albums in catalog -->
     <h1>All Albums</h1>
     <!-- First Card-Box in catalog -->
@@ -43,6 +40,7 @@
     </div>
     <!-- End Second Card-Box in catalog -->
 
+
     <!-- Third Card-Box in catalog -->
     <div class="card-box">
         <img src="/static/images/Lorde.jpg">
@@ -59,7 +57,10 @@
         </div>
     </div>
     <!-- End Third Card-Box in catalog -->
-
+{% else %}
+ <!--  If No albums in catalog -->
+    <p>No Albums in Catalog!</p>
+    {% endif %}
 </section>
 
 {% endblock %}

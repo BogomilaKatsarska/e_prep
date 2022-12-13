@@ -1,5 +1,11 @@
-from django.core import validators
+from django.core import validators, exceptions
 from django.db import models
+
+
+def validate_only_alphanumeric(value):
+    for ch in value:
+        if not ch.isalnum() and ch != '_':
+            raise exceptions.ValidationError("Ensure this value contains only letters, numbers and underscore.")
 
 
 class Profile(models.Model):
@@ -10,6 +16,7 @@ class Profile(models.Model):
         max_length=MAX_USERNAME_LEN,
         validators=(
             validators.MinLengthValidator(MIN_USERNAME_LEN),
+            validate_only_alphanumeric,
         ),
         null=False,
         blank=False,
@@ -62,7 +69,11 @@ class Album(models.Model):
         null=True,
         blank=True,
     )
-    image = models.URLField()
+    image_url = models.URLField(
+        null=False,
+        blank=False,
+        verbose_name='Image URL',
+    )
     price = models.FloatField(
         validators=(
             validators.MinLengthValidator(MIN_PRICE),
